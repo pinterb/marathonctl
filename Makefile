@@ -1,10 +1,11 @@
 NAME=marathonctl
 ARCH=$(shell uname-m)
-VERSION=0.1.0
+VERSION=0.1.1
+GH_USER=pinterb
 MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 CURRENT_DIR := $(shell dirname $(MKFILE_PATH))
 DOCKER_BIN := $(shell which docker)
-GH_USER=pinterb
+GHRELEASE_BIN := $(shell which gh-release)
 
 all: build
 
@@ -12,6 +13,9 @@ all: build
 check.env:
 ifndef DOCKER_BIN
    $(error The docker command is not found. Verify that Docker is installed and accessible)
+endif
+ifndef GHRELEASE_BIN
+   $(error The gh-release command is not found. Verify that github.com/progrium/gh-release is installed and accessible)
 endif
 
 .PHONY: test
@@ -44,7 +48,7 @@ push: container
 release: build
 	rm -rf release && mkdir -p release
 	tar -zcf release/$(NAME)_$(VERSION)_linux_$(ARCH).tgz -C build/linux/ $(NAME)
-	gh-release create $(GH_USER)/$(NAME) $(VERSION) $(shell git rev-parse --abrev-ref HEAD)
+	$(GHRELEASE_BIN) create $(GH_USER)/$(NAME) $(VERSION)
 
 .PHONY: refresh
 refresh: container
