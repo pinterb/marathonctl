@@ -1,7 +1,7 @@
 // Author Seth Hoenig 2015
 
 // Command marathonctl is a CLI tool for Marathon
-package main
+package main // import "github.com/pinterb/marathonctl"
 
 import (
 	"flag"

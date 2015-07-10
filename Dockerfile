@@ -1,4 +1,6 @@
-FROM golang:onbuild
+FROM scratch
 
-ENTRYPOINT ["app"]
-CMD []
+COPY marathonctl /
+
+ENTRYPOINT ["/marathonctl"]
+CMD ["--help"]
